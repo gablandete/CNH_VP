@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche de produit</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#marque-select').on('change', function() {
+            var selectedMarque = $(this).val();
+            $('.modele-option').each(function() {
+                $(this).toggle($(this).data('marque') === selectedMarque || selectedMarque === '');
+            });
+        });
+    });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #40bbc6; /* Couleur de fond */
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            text-align: center;
+            max-width: 400px; /* Augmenté de 400px à 600px */
+            margin: 40px auto; /* Ajout d'une marge extérieure pour séparer les éléments */
+        }
 
+        .titre-container {
+            text-align: center;
+            width: 100%;
+            max-width: 800px; /* Augmenté de 400px à 600px */
+            margin: 20px auto; /* Ajout d'une marge extérieure pour séparer les éléments */
+        }
+        
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px; /* Augmenté pour séparer le formulaire du résultat */
+        }
+        select, input[type="submit"] {
+            width: 100%;
+            padding: 12px; /* Légèrement augmenté */
+            margin-bottom: 15px; /* Ajusté */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            border: none;
+            color: white;
+            background-color: #007bff;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Centrer le contenu de la classe 'result' */
+        }
+        .result img {
+            display: block; /* Permet de centrer l'image */
+            margin: 0 auto; /* Centrer l'image horizontalement */
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        h1 {
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 70px; /* Taille de police augmentée */
+            letter-spacing: 4px; /* Espacement entre les lettres pour étirer le texte */
+        }
+        h2 {
+            color: #8b0000;
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 22px; /* Taille de police augmentée */
+        }
+    
+    
+        .petition-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            background-color: darkred;
+            color: white;
+            text-align: center;
+            border-radius: 15px; /* Bouton arrondi */
+            text-decoration: none; /* Enlève le soulignement du lien */
+            font-weight: bold;
+        }
+    
+        .petition-button:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="titre-container">
+        <h1>NE SACRIFIEZ PAS NOTRE AUTONOMIE !</h1>
+
+        <!-- Bouton pour la pétition -->
+        <a href="https://www.change.org/p/remboursement-des-fauteuils-roulants-respectez-votre-promesse-monsieur-le-président" class="petition-button">Signez la Pétition</a>
+
+        <form action="/" method="post">
+            <select id="marque-select" name="marque">
+                <option value="">Sélectionnez une marque</option>
+                {% for marque in marques %}
+                <option value="{{ marque.marque }}">{{ marque.marque }}</option>
+                {% endfor %}
+            </select>
+            <select id="modele-select" name="produit">
+                <option value="">Sélectionnez un modèle</option>
+                {% for produit in produits %}
+                <option class="modele-option" data-marque="{{ produit.marque }}" value="{{ produit.modele }}">{{ produit.modele }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Rechercher">
+        </form>
+    
+        {% if message %}
+            <div class="result">
+                <h2>{{ message }}</h2>
+                {% if produit_trouve %}
+                    <div>
+                        <h3>{{ produit_trouve.modele }}</h3>
+                        <p>Fabricant: {{ produit_trouve.marque }}</p>
+                        <img src="{{ produit_trouve.photo }}" alt="Photo de {{ produit_trouve.modele }}">
+                        <!-- Ajouter plus de détails du produit si nécessaire -->
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
