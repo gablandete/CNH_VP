@@ -1,4 +1,4 @@
-Flask
+flask==2.0.1
 gunicorn
 Jinja2
 Werkzeug
