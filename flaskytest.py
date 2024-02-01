@@ -40,6 +40,3 @@ def index():
             message = 'Produit non trouvé'
     
     return render_template('index.html', message=message, produits=produits, produit_trouve=produit_trouve, marques=marques)
-
-if __name__ == '__main__':
-    app.run(debug=True, port=5001)
